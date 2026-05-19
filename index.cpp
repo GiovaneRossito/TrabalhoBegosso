@@ -11,7 +11,7 @@ struct Categorias{
 
 struct Produtos{
     int cod;
-    string desc;
+    string descricao;
     int codCat;
     int qntdEstq;
     int estqMin;
@@ -59,7 +59,7 @@ void leituraProdutos(Produtos produtos[], int tam){
         cout << "Digite o codigo do produto: ";
         cin >> produtos[i].cod;
         cout << "Digite a descricao do produto: ";
-        getline(cin >> ws, produtos[i].desc);
+        getline(cin >> ws, produtos[i].descricao);
         cout << "Digite o codigo da categoria do produto: ";
         cin >> produtos[i].codCat;
         cout << "Digite a quantidade em estoque do produto: ";
@@ -290,7 +290,9 @@ int buscarVendedores(Vendedores lista[], int tam, int codBuscado){
     return -1;
 };
 
-void RegistroVenda(Vendas lista[], int &tamVendas, Clientes listaClientes[], int tamClientes, Vendedores listaVendedores[], int tamVendedores, ItensVendas listaItens[], int &tamItens){
+//4.3
+
+void RegistroVenda(Vendas lista[], int &tamVendas, Clientes listaClientes[], int tamClientes, Vendedores listaVendedores[], int tamVendedores, ItensVendas listaItens[], int &tamItens, Produtos listaProdutos[], int tamProdutos){
     int codBuscadoCli = 0;
     int codBuscadoVend = 0;
     int posCli = 0;
@@ -333,12 +335,7 @@ void RegistroVenda(Vendas lista[], int &tamVendas, Clientes listaClientes[], int
         cout << "Deseja adicionar um item a venda? (S/N): ";
         cin >> opcao;
         if(opcao == 'S' || opcao == 's'){
-            cout << "Digite o codigo do produto: ";
-            cin >> listaItens[tamItens].codProd;
-            cout << "Digite a quantidade do produto: ";
-            cin >> listaItens[tamItens].qntd;
-            listaItens[tamItens].codVenda = lista[tamVendas].cod;
-            tamItens++;
+            incluirItemVenda(listaItens, tamItens, listaProdutos, tamProdutos, lista[tamVendas].cod);
         }
         else if(opcao == 'N' || opcao == 'n'){
             break;
@@ -349,6 +346,73 @@ void RegistroVenda(Vendas lista[], int &tamVendas, Clientes listaClientes[], int
     }
     while (opcao == 'S' || opcao == 's');
     tamVendas++;
+};
+
+//busca produtos
+
+int buscarProdutos(Produtos lista[], int tam, int codBuscado){
+    int inicio = 0;
+    int final = tam - 1;
+    int meio = 0;
+
+    while(inicio <= final){
+        meio = (inicio + final) / 2;
+        if(lista[meio].cod == codBuscado){
+            cout << "Produto encontrado:" << endl;
+            cout << "Codigo: " << lista[meio].cod << endl;
+            cout << "Descricao: " << lista[meio].descricao << endl;
+            cout << "Codigo da categoria: " << lista[meio].codCat << endl;
+            cout << "Quantidade em estoque: " << lista[meio].qntdEstq << endl;
+            cout << "Estoque minimo: " << lista[meio].estqMin << endl;
+            cout << "Estoque maximo: " << lista[meio].estqMax << endl;
+            cout << "Preco unitario: " << lista[meio].precoUni << endl;
+            return meio;
+        }
+        else if(lista[meio].cod < codBuscado){
+            inicio = meio + 1;
+        }
+        else{
+            final = meio - 1;
+        }
+    }
+    cout << "Produto com codigo " << codBuscado << " nao encontrado." << endl;
+    return -1;
+};
+
+//5
+
+void incluirItemVenda(ItensVendas listaItens[], int &tamItens, Produtos listaProdutos[], int tamProdutos, int codVendaAtual){
+    int codBuscadoProduto = 0;
+    int posVenda = 0;
+    int posProduto = 0;
+
+    do {
+        cout << "Digite o codigo do produto: ";
+        cin >> codBuscadoProduto;
+        posProduto = buscarProdutos(listaProdutos, tamProdutos, codBuscadoProduto);
+        if(posProduto == -1){
+            cout << "Produto nao encontrado. Digite um codigo valido." << endl;
+        }
+        else{
+            //5.1
+            cout << "Produto encontrado: " << listaProdutos[posProduto].descricao << endl;
+            cout << "Preco unitario: " << listaProdutos[posProduto].precoUni << endl;
+            //5.2
+            cout << "Digite a quantidade do produto: ";
+            cin >> listaItens[tamItens].qntd;
+            if(listaItens[tamItens].qntd > listaProdutos[posProduto].qntdEstq){
+                cout << "ERRO!! quantidade solicitada excede o estoque disponivel. Estoque atual: " << listaProdutos[posProduto].qntdEstq << endl;
+            }
+            //5.3
+            else{
+                listaItens[tamItens].codVenda = codVendaAtual;
+                listaItens[tamItens].codProd = codBuscadoProduto;
+                listaProdutos[posProduto].qntdEstq -= listaItens[tamItens].qntd;
+                tamItens++;
+            }
+        }
+    }
+    while (posProduto == -1);
 };
 
 
@@ -373,6 +437,9 @@ int main(){
     int tamVendas = 0;
     ItensVendas listaItens[tam * 10];
     int tamItens = 0;
+    //5
+    Produtos listaProdutos[tam];
+    int tamProdutos = 0;
     int opcao;
 
     do {
@@ -434,7 +501,7 @@ int main(){
                 exibirVendedores(vendfinal, tamfinalVend);
                 break;
             case 9:
-                RegistroVenda(listaVendas, tamVendas, clifinal, tamfinalCli, vendfinal, tamfinalVend, listaItens, tamItens);
+                RegistroVenda(listaVendas, tamVendas, clifinal, tamfinalCli, vendfinal, tamfinalVend, listaItens, tamItens, listaProdutos, tamProdutos);
                 break;
             default:
                 cout << "Opcao invalida." << endl;
