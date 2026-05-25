@@ -415,6 +415,60 @@ void incluirItemVenda(ItensVendas listaItens[], int &tamItens, Produtos listaPro
     while (posProduto == -1);
 };
 
+//6
+
+void consultarProduto(Produtos lista[], int tam){
+    int codBuscadoProduto = 0;
+    cout << "Digite o codigo do produto: ";
+    cin >> codBuscadoProduto;
+    int posProduto = buscarProdutos(lista, tam, codBuscadoProduto);
+    if(posProduto == -1){
+        cout << "Produto nao encontrado. Digite um codigo valido." << endl;
+    }
+    else{
+        cout << "Produto encontrado: " << lista[posProduto].descricao << endl;
+        cout << "Preco unitario: " << lista[posProduto].precoUni << endl;
+        cout << "Quantidade em estoque: " << lista[posProduto].qntdEstq << endl;
+        cout << "Estoque minimo: " << lista[posProduto].estqMin << endl;
+        cout << "Estoque maximo: " << lista[posProduto].estqMax << endl;
+        cout << "Codigo da categoria: " << lista[posProduto].codCat << endl;
+        //6.1
+        cout << "Valor Total Estoque: " << lista[posProduto].qntdEstq * lista[posProduto].precoUni << endl;
+    }
+};
+
+//7
+
+void exibirEstoqueBaixo(Produtos lista[], int tam){
+    int qntdComprar = 0;
+    float valorComprar = 0.0;
+    float valorTotal = 0.0;
+    cout << "\n--- Produtos com Estoque Baixo ---" << endl;
+    for(int i = 0; i < tam; i++){
+        if(lista[i].qntdEstq < lista[i].estqMin){
+            cout << "Produto: " << lista[i].descricao << endl;
+            cout << "Codigo: " << lista[i].cod << endl;
+            cout << "Quantidade em estoque: " << lista[i].qntdEstq << endl;
+            cout << "Estoque minimo: " << lista[i].estqMin << endl;
+            cout << "Estoque maximo: " << lista[i].estqMax << endl;
+            //7.1
+            qntdComprar = lista[i].estqMax - lista[i].qntdEstq;
+            valorComprar = qntdComprar * lista[i].precoUni;
+            cout << "Quantidade a comprar para atingir estoque maximo: " << qntdComprar << endl;
+            cout << "Valor total para comprar a quantidade necessaria: " << valorComprar << endl;
+            cout << "-------------------------------" << endl;
+        }
+    }
+    //7.2
+    for(int i = 0; i < tam; i++){
+        if(lista[i].qntdEstq < lista[i].estqMin){
+            qntdComprar = lista[i].estqMax - lista[i].qntdEstq;
+            valorComprar = qntdComprar * lista[i].precoUni;
+            valorTotal += valorComprar;
+        }
+    }
+    cout << "Valor total para comprar todos os produtos: " << valorTotal << endl;
+};
 
 int main(){
     setlocale(LC_ALL, "Portuguese");
@@ -462,6 +516,10 @@ int main(){
         cout << "[ REGISTRO DE VENDAS ]\n";
         cout << "  9. Registrar venda\n\n";
 
+        cout << "[ CONSULTAS ]\n";
+        cout << "  10. Consultar produto\n\n";
+        cout << "  11. Exibir produtos com estoque baixo\n\n";
+
 
         cout << "  0. Sair\n";
 
@@ -502,6 +560,12 @@ int main(){
                 break;
             case 9:
                 RegistroVenda(listaVendas, tamVendas, clifinal, tamfinalCli, vendfinal, tamfinalVend, listaItens, tamItens, listaProdutos, tamProdutos);
+                break;
+            case 10:
+                consultarProduto(listaProdutos, tamProdutos);
+                break;
+            case 11:
+                exibirEstoqueBaixo(listaProdutos, tamProdutos);
                 break;
             default:
                 cout << "Opcao invalida." << endl;
