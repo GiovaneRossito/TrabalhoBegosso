@@ -48,10 +48,23 @@ struct ItensVendas{
 //1
 void leituraCategorias(Categorias categorias[], int &tam){
     cout << "\n--- Cadastrar Nova Categoria ---" << endl;
-    cout << "Digite o codigo da categoria: ";
-    cin >> categorias[tam].cod;
+    int codigoDigitado;
+    bool erro;
+    do {
+        cout << "Digite o codigo da categoria: ";
+        cin >> codigoDigitado;
+        erro = false;
+
+        if (tam > 0 && codigoDigitado <= categorias[tam - 1].cod) {
+            cout << "ERRo O codigo deve ser sequencial e estritamente maior que o ultimo cadastrado e nao pode ser igual" << categorias[tam - 1].cod << endl;
+            erro = true;
+        }
+    } while(erro);
+
+    categorias[tam].cod = codigoDigitado;
     cout << "Digite a descricao da categoria: ";
     getline(cin >> ws, categorias[tam].desc);
+    
     tam++;
     cout << "Categoria cadastrada com sucesso!" << endl;
 };
@@ -59,8 +72,23 @@ void leituraCategorias(Categorias categorias[], int &tam){
 //1
 void leituraProdutos(Produtos produtos[], int &tam){
     cout << "\n--- Cadastrar Novo Produto ---" << endl;
-    cout << "Digite o codigo do produto: ";
-    cin >> produtos[tam].cod;
+    
+    int codigoDigitado;
+    bool erro;
+
+    do {
+        cout << "Digite o codigo do produto: ";
+        cin >> codigoDigitado;
+        erro = false;
+
+        if (tam > 0 && codigoDigitado <= produtos[tam - 1].cod) {
+            cout << "ERRO O codigo deve ser sequencial e estritamente maior que o ultimo cadastrado e nao pode ser igual" << produtos[tam - 1].cod << endl;
+            erro = true;
+        }
+
+    } while(erro);
+
+    produtos[tam].cod = codigoDigitado;
     cout << "Digite a descricao do produto: ";
     getline(cin >> ws, produtos[tam].descricao);
     cout << "Digite o codigo da categoria do produto: ";
@@ -73,6 +101,7 @@ void leituraProdutos(Produtos produtos[], int &tam){
     cin >> produtos[tam].estqMax;
     cout << "Digite o preco unitario do produto: ";
     cin >> produtos[tam].precoUni;
+    
     tam++;
     cout << "Produto cadastrado com sucesso!" << endl;
 };
