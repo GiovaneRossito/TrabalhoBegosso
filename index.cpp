@@ -46,35 +46,35 @@ struct ItensVendas{
 };
 
 //1
-
 void leituraCategorias(Categorias categorias[], int &tam){
-    for(int i = 0; i < tam; i++){
-        cout << "Digite o codigo da categoria: ";
-        cin >> categorias[i].cod;
-        cout << "Digite a descricao da categoria: ";
-        getline(cin >> ws, categorias[i].desc);
-    }
+    cout << "\n--- Cadastrar Nova Categoria ---" << endl;
+    cout << "Digite o codigo da categoria: ";
+    cin >> categorias[tam].cod;
+    cout << "Digite a descricao da categoria: ";
+    getline(cin >> ws, categorias[tam].desc);
+    tam++;
+    cout << "Categoria cadastrada com sucesso!" << endl;
 };
 
 //1
-
 void leituraProdutos(Produtos produtos[], int &tam){
-    for(int i = 0; i < tam; i++){
-        cout << "Digite o codigo do produto: ";
-        cin >> produtos[i].cod;
-        cout << "Digite a descricao do produto: ";
-        getline(cin >> ws, produtos[i].descricao);
-        cout << "Digite o codigo da categoria do produto: ";
-        cin >> produtos[i].codCat;
-        cout << "Digite a quantidade em estoque do produto: ";
-        cin >> produtos[i].qntdEstq;
-        cout << "Digite o estoque minimo do produto: ";
-        cin >> produtos[i].estqMin;
-        cout << "Digite o estoque maximo do produto: ";
-        cin >> produtos[i].estqMax;
-        cout << "Digite o preço unitario do produto: ";
-        cin >> produtos[i].precoUni;
-    }
+    cout << "\n--- Cadastrar Novo Produto ---" << endl;
+    cout << "Digite o codigo do produto: ";
+    cin >> produtos[tam].cod;
+    cout << "Digite a descricao do produto: ";
+    getline(cin >> ws, produtos[tam].descricao);
+    cout << "Digite o codigo da categoria do produto: ";
+    cin >> produtos[tam].codCat;
+    cout << "Digite a quantidade em estoque do produto: ";
+    cin >> produtos[tam].qntdEstq;
+    cout << "Digite o estoque minimo do produto: ";
+    cin >> produtos[tam].estqMin;
+    cout << "Digite o estoque maximo do produto: ";
+    cin >> produtos[tam].estqMax;
+    cout << "Digite o preco unitario do produto: ";
+    cin >> produtos[tam].precoUni;
+    tam++;
+    cout << "Produto cadastrado com sucesso!" << endl;
 };
 
 //2
@@ -110,6 +110,11 @@ void leituraClientes(Clientes lista[], int &tam) {
 
 //2
 void InclusaoClientes(Clientes lista1[], int tam1, Clientes lista2[], int tam2, Clientes listafinal[], int &tamfinal){
+    if(tam1 == 0 && tam2 == 0){
+        cout << "Nenhum cliente cadastrado para inclusao." << endl;
+        tamfinal = 0;
+        return;
+    }
     int i = 0;
     int j = 0;
     int k = 0;
@@ -149,6 +154,10 @@ void InclusaoClientes(Clientes lista1[], int tam1, Clientes lista2[], int tam2, 
 
 //exibir arquivo final apos inclusao
 void exibirClientes(Clientes listafinal[], int tamfinal){
+    if(tamfinal == 0){
+        cout << "Nenhum cliente cadastrado para inclusao." << endl;
+        return;
+    }
     cout << "\n--- Lista Final de Clientes ---" << endl;
     for(int i = 0; i < tamfinal; i++){
         cout << "Codigo: " << listafinal[i].cod << endl;
@@ -190,6 +199,11 @@ void leituraVendedores(Vendedores lista[], int &tam) {
 
 //3
 void InclusaoVendedores(Vendedores lista1[], int tam1, Vendedores lista2[], int tam2, Vendedores listafinal[], int &tamfinal){
+    if(tam1 == 0 && tam2 == 0){
+        cout << "Nenhum vendedor cadastrado para inclusao." << endl;
+        tamfinal = 0;
+        return;
+    }
     int i = 0;
     int j = 0;
     int k = 0;
@@ -229,6 +243,10 @@ void InclusaoVendedores(Vendedores lista1[], int tam1, Vendedores lista2[], int 
 
 //exibir arquivo final apos inclusao
 void exibirVendedores(Vendedores listafinal[], int tamfinal){
+    if(tamfinal == 0){
+        cout << "Nenhum vendedor cadastrado para inclusao." << endl;
+        return;
+    }
     cout << "\n--- Lista Final de Vendedores ---" << endl;
     for(int i = 0; i < tamfinal; i++){
         cout << "Codigo: " << listafinal[i].cod << endl;
@@ -242,6 +260,10 @@ void exibirVendedores(Vendedores listafinal[], int tamfinal){
 
 //4.1
 int buscarClientes(Clientes lista[], int tam, int codBuscado){
+    if(tam == 0) {
+        cout << "Nenhum cliente cadastrado para busca." << endl;
+        return -1;
+    }
     int inicio = 0;
     int final = tam - 1;
     int meio = 0;
@@ -269,6 +291,10 @@ int buscarClientes(Clientes lista[], int tam, int codBuscado){
 
 //4.2
 int buscarVendedores(Vendedores lista[], int tam, int codBuscado){
+    if(tam == 0) {
+        cout << "Nenhum vendedor cadastrado para busca." << endl;
+        return -1;
+    }
     int inicio = 0;
     int final = tam - 1;
     int meio = 0;
@@ -295,6 +321,10 @@ int buscarVendedores(Vendedores lista[], int tam, int codBuscado){
 
 //5.1
 int buscarProdutos(Produtos lista[], int tam, int codBuscado){
+    if(tam == 0) {
+        cout << "Nenhum produto cadastrado no sistema para busca" << endl;
+        return -1;
+    }
     int inicio = 0;
     int final = tam - 1;
     int meio = 0;
@@ -323,8 +353,12 @@ int buscarProdutos(Produtos lista[], int tam, int codBuscado){
     return -1;
 };
 
-//4.3 e 5
+//5
 void incluirItemVenda(ItensVendas listaItens[], int &tamItens, Produtos listaProdutos[], int tamProdutos, int codVendaAtual){
+    if(tamProdutos == 0) {
+        cout << "ERRO: Nenhum produto cadastrado no sistema para ser vendido!" << endl;
+        return;
+    }
     int codBuscadoProduto = 0;
     int posProduto = 0;
 
@@ -361,6 +395,10 @@ void incluirItemVenda(ItensVendas listaItens[], int &tamItens, Produtos listaPro
 
 //4
 void RegistroVenda(Vendas lista[], int &tamVendas, Clientes listaClientes[], int tamClientes, Vendedores listaVendedores[], int tamVendedores, ItensVendas listaItens[], int &tamItens, Produtos listaProdutos[], int tamProdutos){
+    if(tamClientes == 0 || tamVendedores == 0) {
+        cout << "ERRO Voce precisa cadastrar pelo menos um Cliente e um Vendedor antes de registrar uma venda!" << endl;
+        return;
+    }
     int codBuscadoCli = 0;
     int codBuscadoVend = 0;
     int posCli = 0;
@@ -421,6 +459,10 @@ void RegistroVenda(Vendas lista[], int &tamVendas, Clientes listaClientes[], int
 
 //6
 void consultarProduto(Produtos lista[], int tam){
+    if(tam == 0){
+        cout << "Nenhum produto cadastrado para consulta." << endl;
+        return;
+    }
     int codBuscadoProduto = 0;
     cout << "Digite o codigo do produto: ";
     cin >> codBuscadoProduto;
@@ -442,6 +484,10 @@ void consultarProduto(Produtos lista[], int tam){
 
 //7
 void exibirEstoqueBaixo(Produtos lista[], int tam){
+    if(tam == 0){
+        cout << "Nenhum produto cadastrado para consulta de estoque baixo." << endl;
+        return;
+    }
     int qntdComprar = 0;
     float valorComprar = 0.0;
     float valorTotal = 0.0;
@@ -474,6 +520,10 @@ void exibirEstoqueBaixo(Produtos lista[], int tam){
 
 //8
 void valorTotalVendas(Vendas lista[], ItensVendas listaItens[], int tamVendas, int tamItens, Produtos listaProdutos[], int tamProdutos){
+    if(tamVendas == 0){
+        cout << "Nenhuma venda registrada." << endl;
+        return;
+    }
     float valorTotal = 0.0;
     for(int i = 0; i < tamVendas; i++){
         float valorVenda = 0.0;
@@ -493,6 +543,11 @@ void valorTotalVendas(Vendas lista[], ItensVendas listaItens[], int tamVendas, i
 
 //9
 void exclusao(Clientes lista1[], int tam1, int codExclusao[], int tam2, Clientes listafinal[], int &tamfinal) {
+    if (tam1 == 0) {
+        cout << "Nenhum cliente cadastrado no sistema para ser excluido." << endl;
+        tamfinal = 0;
+        return;
+    }
     int i = 0;
     int j = 0;
     int k = 0;
@@ -599,24 +654,24 @@ int main(){
     do {
         cout << "=========================================\n";
 
-        cout << " #CADASTROS GERAIS# \n";
+        cout << " CADASTROS GERAIS \n";
         cout << "  1. Cadastrar categorias\n";
         cout << "  2. Cadastrar produtos\n\n";
 
-        cout << " #GERENCIAR CLIENTES# \n";
+        cout << " GERENCIAR CLIENTES \n";
         cout << "  3. Adicionar clientes Base (Sequencial)\n";
         cout << "  4. Inclusao de novos clientes (Sequencial)\n";
         cout << "  5. Exibir lista final de clientes\n\n";
 
-        cout << " #GERENCIAR VENDEDORES# \n";
+        cout << " GERENCIAR VENDEDORES \n";
         cout << "  6. Adicionar Vendedores Base (Sequencial)\n";
         cout << "  7. Inclusao de novos vendedores (Sequencial)\n";
         cout << "  8. Exibir lista final de vendedores\n\n";
 
-        cout << " #REGISTRO DE VENDAS# \n";
+        cout << " REGISTRO DE VENDAS \n";
         cout << "  9. Registrar venda\n\n";
 
-        cout << " #CONSULTAS# \n";
+        cout << " CONSULTAS \n";
         cout << "  10. Consultar produto\n";
         cout << "  11. Exibir produtos com estoque baixo\n";
         cout << "  12. Calcular valor total de vendas\n";
@@ -673,7 +728,7 @@ int main(){
                 valorTotalVendas(listaVendas, listaItens, tamVendas, tamItens, produtos, tamProd);
                 break;
             case 13:
-                exclusao(clifinal, tamfinalCli, codExclusao, tamProd, clifinalExclusao, tamfinalExclusao);
+                exclusao(clifinal, tamfinalCli, codExclusao, tam, clifinalExclusao, tamfinalExclusao);
                 exibirClientes(clifinalExclusao, tamfinalExclusao);
                 break;
             case 14:
